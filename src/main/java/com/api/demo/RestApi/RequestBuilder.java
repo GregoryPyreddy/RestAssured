@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -29,7 +30,6 @@ public class RequestBuilder {
 	public static String Body;
 	public static boolean flag = false;
 	public static JsonPath jsonPath;
-	//public static Properties IDConfig = FilesReader.loadxmlProperties(FilePath.ConfigPath("ID.xml"));
 
 	public static void main(String[] args) {
 		errFlag = "";
@@ -66,7 +66,7 @@ public class RequestBuilder {
 	}
 
 	public static void ExecuteRequest() {
-		response = given().spec(requestSpec).request(DataHandler.getMethod());
+		response = RestAssured.given(requestSpec).relaxedHTTPSValidation().when().request(DataHandler.getMethod().toUpperCase());
 		System.out.println(response.statusCode());
 		System.out.println(response.body().print());
 		Body = response.body().asString();
